@@ -1,0 +1,108 @@
+De cara a facilitar y flexibilizar el proceso de inscripción GuaraBot provee una API Rest y una interface de usuario basada en Telegram.
+
+
+|import |
+|guarabot|
+
+!|EnvFixture|
+|target url?|
+|$VALUE=    |
+*!
+
+
+!2 Flujo básico
+
+!|script   | FlujoBasicoFixture  |
+| numero   | 540114444 4444      |
+| destino  | 5401155556666       | inicio | 20180311;14:30 | fin | 20180311;14:31 |
+| destino  | 5431455556667       | inicio | 20180331;23:30 | fin | 20180401;00:30 |
+| facturar | 201804              |
+| check    | monto a pagar       |	~=100.0 |
+| check    | cantidad llamadas   |	~=0     |
+
+!2 Casos llamadas locales
+
+!|TelcoBillingFixture|
+|# caso| numero origen    |	numero destino   | inicio         | fin           | costo?  |
+|L1    | 54 011 4444 1111 |	54 011 5555 6666 | 20190211;14:30 | 20190211;14:31| ~=3.2   |
+|L2    | 54 011 4444 2222 |	54 011 5555 6666 | 20190211;22:30 | 20190211;22:31| ~=1.8   |
+|L3    | 54 011 4444 3333 |	54 011 5555 6666 | 20190210;14:30 | 20190210;14:31| ~=2.1   |
+|L4    | 54 011 4444 4444 |	54 011 5555 6666 | 20190211;19:50 | 20190211;20:10| ~=50    |
+|L5    | 54 011 4444 5555 |	54 011 5555 6666 | 20190208;23:50 | 20190209;00:10| ~=39    |
+|L6    | 54 011 4444 5678 | 54 011 5555 6543 | 20190207;23:50 | 20190209;00:10|	~=3639  |
+|L7    | 54 011 1234 1234 | 54 011 1235 1235 | 20190408;07:59 | 20190408;08:30| ~=97.8  |
+
+
+!2 Casos llamadas nacionales
+
+!|TelcoBillingFixture|
+|# caso| numero origen    |	numero destino   | inicio         | fin           | costo?  |
+|N1    | 54 011 4444 4444 |	54 314 5555 6666 | 20190211;14:30 | 20190211;14:31| ~=20    |
+|N2    | 54 011 4444 5555 |	54 314 5555 6666 | 20190211;22:30 | 20190211;22:36| ~=21.5  |
+|N3    | 54 011 4444 5555 |	54 324 5555 6666 | 20190210;12:30 |	20190210;12:38|	~=24.5  |
+|N4    | 54 011 1234 1234 |	54 348 4235 1235 | 20190408;08:00 |	20190408;08:05| ~=20    |
+
+!2 Casos llamadas internacionales
+
+!|TelcoBillingFixture|
+|# caso| numero origen    |	numero destino   | inicio         | fin           | costo?  |
+|I1-norteamerica    | 54 011 4444 4444 |	52 011 5555 6666 | 20190211;14:30 | 20190211;14:31| ~=10    |
+|I2-restoamerica    | 54 011 4444 4444 |	55 011 5555 6666 | 20190211;14:30 | 20190211;14:31| ~=6     |
+|I3-restomundo      | 54 011 4444 4444 |	39 011 5555 6666 | 20190211;14:30 | 20190211;14:31| ~=15    |
+
+
+!2 Casos de facturacion
+
+!3 Caso F1: facturo un mes con dos llamadas, una nacional y otra local
+!|script   | FacturacionFixture   |
+| numero   | 5401111111111    |
+| destino  | 54 011 5555 6666 | inicio | 20190211;14:30 | fin | 20190211;14:31|
+| destino  | 54 314 5555 6666 | inicio | 20190211;14:30 | fin | 20190211;14:31|
+| facturar | 201902 |
+| check    | monto a pagar     | ~=123.2      |
+| check    | cantidad llamadas | ~=2.0        |
+
+
+!3 Caso F2: facturo un mes en el que no se hicieron llamadas
+
+!|script   | FacturacionFixture |
+| numero   | 5401144442222      |
+| destino  | 54 011 55556666    | inicio | 20190211;14:30 | fin | 20190211;14:31|
+| destino  | 54 314 5555 6666   | inicio | 20190211;14:32 | fin | 20190211;14:33|
+| facturar | 201901             |
+| check    | monto a pagar      | ~=100.0|
+| check    | cantidad llamadas  | ~=0.0  |
+
+
+!3 Caso F3: facturo un mes con 3 llamadas, local, nacional e internacional
+
+!|script   | FacturacionFixture |
+| numero   | 540114444 3333     |
+| destino  | 5401155556666      | inicio | 20180311;14:30 | fin | 20180311;14:31|
+| destino  | 5431455556666      | inicio | 20180311;14:32 | fin | 20180311;14:33|
+| destino  | 3901155556666      | inicio | 20180311;14:35 | fin | 20180311;14:36|
+| facturar | 201803             |
+| check    | monto a pagar      | ~=137.1 |
+| check    | cantidad llamadas  | ~=3.0  |
+
+!3 Caso F4: dos llamadas nacionales al mismo numero
+
+!|script   | FacturacionFixture |
+| numero   | 54 011 4444 3333      |
+| destino  | 54 314 4444 4444      | inicio | 20180311;14:30 | fin | 20180311;14:31|
+| destino  | 54 314 4444 4444      | inicio | 20180311;14:32 | fin | 20180311;14:33|
+| facturar | 201803                |
+| check    | monto a pagar      | ~=140.0 |
+| check    | cantidad llamadas  | ~=2  |
+
+
+
+!contents -R2
+!*> '''Variables Defined'''
+!define TEST_SYSTEM {slim}
+*!
+
+!*> '''Classpath'''
+${maven.classpath}
+!path ${RootPath}/guarabot.jar
+*!

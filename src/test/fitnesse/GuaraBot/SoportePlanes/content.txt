@@ -1,0 +1,104 @@
+A partir de funcionalidad base se pretende agregar soporte para los siguientes planes
+
+* Plan amigos: ofrece la posibilidad de definir hasta 3 números amigos los cuales deben ser números nacionales. Todas las llamadas a esos números se encuentran cubiertas dentro del plan, con lo cual su costo es cero. Este plan tiene un costo de $ 200.
+* Plan turista: este plan bonifica el costo de las llamadas internacionales a un pais en particular, haciendo que las mismas sean cobradas como llamadas nacionales. Este plan tiene un costo de $ 300.
+
+Es importante descatar que el plan no afecta el costo de las llamadas sino que afecta exclusivamente a la facturación
+A partir de esto es necesario agregar los siguientes endpoints para asociar un plan a una línea y también para consultar
+
+PUT /numero
+{ "numero": "54 011 4444 1111", "plan": "amigos", "amigos":"5401133334444,5401133335555,5401133336666" }
+response: status 201, { "numero": "54 011 4444 1111", "plan_actual": "amigos", "plan_anterior": "ninguno"}
+
+
+PUT /numero
+{ "numero": "54 011 4444 1111", "plan": "turista", "pais":"55" }
+response: status 201, { "numero": "54 011 4444 1111", "plan_actual": "turista", "plan_anterior": "amigos"}
+
+Adicionalmente el endpoint de facturación debe modificarse para incluir en la respuesta la información de plan.
+
+GET /facturacion?numero=541140895555&mes=201901
+response: status 200, { "cantidad_llamadas": 1, "mes":"201901", "costo_total": 103.2, "numero":"541140895555", "plan":"amigos"  }
+
+Por otro lado, hay un cambio en las llamadas internacionales, las mismas tienen un costo 50% durante los fines de semana
+
+|import |
+|guarabot|
+
+!|EnvFixture|
+|target url?|
+|$VALUE=    |
+*!
+
+!2 Caso FA1: Facturación plan amigo sin ninguna llamada
+
+!|script   | FacturacionPlanesFixture   |
+| numero   | 5401111111111    |
+| plan     | amigos           | numeros| 5401133334444,5401133335555,5401133336666     |
+| facturar | 201902 |
+| check    | monto a pagar     | ~=200      |
+| check    | cantidad llamadas | 0            |
+
+
+!2 Caso FA2: Facturación plan amigo con llama a amigo
+
+!|script   | FacturacionPlanesFixture   |
+| numero   | 5401111111111    |
+| plan     | amigos           | numeros| 5401133334444,5401133335555,5401133336666     |
+| destino  | 54 011 3333 6666 | inicio | 20190213;14:30 | fin | 20190213;14:31|
+| facturar | 201902 |
+| check    | monto a pagar     | ~=200      |
+| check    | cantidad llamadas | 1            |
+
+!2 Caso FA3: Facturación plan amigo con llamadas mixtas
+
+!|script   | FacturacionPlanesFixture   |
+| numero   | 5401111111111    |
+| plan     | amigos           | numeros| 5401133334444,5401133335555,5401133336666     |
+| destino  | 54 011 5555 6666 | inicio | 20190211;14:30 | fin | 20190211;14:31|
+| destino  | 54 314 5555 6666 | inicio | 20190211;14:30 | fin | 20190211;14:31|
+| destino  | 54 011 3333 6666 | inicio | 20190213;14:30 | fin | 20190213;14:31|
+| facturar | 201902 |
+| check    | monto a pagar     | ~=223.2      |
+| check    | cantidad llamadas | 3            |
+
+!2 Caso FT1: Facturación plan turista sin ninguna llamada
+
+!|script   | FacturacionPlanesFixture   |
+| numero   | 5401111111111    |
+| plan     | turista          | pais   | 55     |
+| facturar | 201902 |
+| check    | monto a pagar     | ~=0      |
+| check    | cantidad llamadas | 0            |
+
+
+!2 Caso FT2: Facturación plan turista con llamada a pais turista
+
+!|script   | FacturacionPlanesFixture   |
+| numero   | 5401111111111    |
+| plan     | turista          | pais   | 55     |
+| destino  | 55 011 3333 6666 | inicio | 20190213;14:30 | fin | 20190213;14:31|
+| facturar | 201902 |
+| check    | monto a pagar     | ~=300      |
+| check    | cantidad llamadas | 1            |
+
+
+!2 Caso FT3: Facturación plan turista con llamadas mixtas
+
+!|script   | FacturacionPlanesFixture   |
+| numero   | 5401111111111    |
+| plan     | turista          | pais   | 55     |
+| destino  | 54 011 5555 6666 | inicio | 20190211;14:30 | fin | 20190211;14:31|
+| destino  | 54 314 5555 6666 | inicio | 20190211;14:30 | fin | 20190211;14:31|
+| destino  | 55 011 3333 6666 | inicio | 20190213;14:30 | fin | 20190213;14:31|
+| facturar | 201902 |
+| check    | monto a pagar     | ~=323.2      |
+| check    | cantidad llamadas | 3            |
+
+!2 Casos llamadas internacionales en fines de semana
+
+!|TelcoBillingFixture|
+|# caso| numero origen    |	numero destino   | inicio         | fin           | costo?  |
+|I1-norteamerica    | 54 011 4444 4444 |	52 011 5555 6666 | 20190210;14:30 | 20190210;14:31| ~=5    |
+|I2-restoamerica    | 54 011 4444 4444 |	55 011 5555 6666 | 20190210;14:30 | 20190210;14:31| ~=3     |
+|I3-restomundo      | 54 011 4444 4444 |	39 011 5555 6666 | 20190210;14:30 | 20190210;14:32| ~=15    |

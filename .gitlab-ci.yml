@@ -1,0 +1,28 @@
+stages:
+  - build
+  - release
+services:
+  - docker:dind
+build_jar:
+  stage: build
+  image: maven:3.5.4-ibmjava-8-alpine
+  script:
+    - mvn clean package -Dbuild_id=$CI_PIPELINE_ID
+  artifacts:
+    paths:
+      - target/*.jar
+      - target/fitnesse/FitNesseRoot
+    expire_in: 1 hour
+build_image:
+  stage: release
+  image: docker:latest
+  before_script:
+    - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+  script:
+    - version=`ls target/guarabot*.jar | sed 's/.*-//' | sed 's/.jar//'`
+    - docker build -t registry.gitlab.com/fiuba-memo2/guarabot:$version .
+    - docker push registry.gitlab.com/fiuba-memo2/guarabot:$version
+    - docker tag registry.gitlab.com/fiuba-memo2/guarabot:$version registry.gitlab.com/fiuba-memo2/guarabot:latest
+    - docker push registry.gitlab.com/fiuba-memo2/guarabot:latest
+  only:
+    - master
