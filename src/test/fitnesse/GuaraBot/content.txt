@@ -9,8 +9,66 @@ De cara a facilitar y flexibilizar el proceso de inscripción GuaraBot provee un
 |$VALUE=    |
 *!
 
+Definición de modalidad de aprobación de materia:
+ * por parciales: hay dos evaluaciones parciales y su promedio debe ser mayor a 6
+ * por tareas: hay N tareas, el promedio debe ser mayor a 6 y solo 2 pueden tener nota menor a 4
+ * por coloquio: es una única nota y la aprobación es binaria
 
 !2 Flujo básico
+
+Materia con modalidad de parciales aprobada
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|parciales|
+|inscribir alumno|Esteban Trabajos   |username|etrabajos|materia|1001                                      |
+|calificar       |etrabajos          |materia |1001     |notas  |[4,6]                                     |
+|check           |aprobo             |true                                                                 |
+|check           |nota final         |~=5                                                                  |
+
+Materia con modalidad de parciales desaprobada
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|parciales|
+|inscribir alumno|Esteban Trabajos   |username|etrabajos|materia|1001                                      |
+|calificar       |etrabajos          |materia |1001     |notas  |[4,2]                                     |
+|check           |aprobo             |false                                                                |
+|check           |nota final         |~=3                                                                  |
+
+Materia con modalidad de tareas aprobada
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|parciales|
+|inscribir alumno|Esteban Trabajos   |username|etrabajos|materia|1001                                      |
+|calificar       |etrabajos          |materia |1001     |notas  |[4,6,8,1]                                 |
+|check           |aprobo             |true                                                                 |
+|check           |nota final         |~=4.75                                                               |
+
+Materia con modalidad de tareas desaprobada
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|parciales|
+|inscribir alumno|Esteban Trabajos   |username|etrabajos|materia|1001                                      |
+|calificar       |etrabajos          |materia |1001     |notas  |[4,3,6,8,1,1]                             |
+|check           |aprobo             |false                                                                |
+|check           |nota final         |~=3.83                                                               |
+
+Materia con modalidad de coloquio aprobada
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|parciales|
+|inscribir alumno|Esteban Trabajos   |username|etrabajos|materia|1001                                      |
+|calificar       |etrabajos          |materia |1001     |notas  |10                                        |
+|check           |aprobo             |true                                                                 |
+|check           |nota final         |~=10                                                                 |
+
+Materia con modalidad de coloquio desaprobada
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|parciales|
+|inscribir alumno|Esteban Trabajos   |username|etrabajos|materia|1001                                      |
+|calificar       |etrabajos          |materia |1001     |notas  |1                                         |
+|check           |aprobo             |false                                                                |
+|check           |nota final         |~=10                                                                 |
 
 !|script   | FlujoBasicoFixture  |
 | numero   | 540114444 4444      |

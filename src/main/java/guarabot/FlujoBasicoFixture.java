@@ -34,6 +34,14 @@ public class FlujoBasicoFixture extends JsonFixture {
     protected int cantidadLlamadas;
     protected float costoTotal;
 
+    protected final static String ALTA_MATERIA_PATH = "materias";
+    protected final static String INSCRIBIR_ALUMNO_PATH = "alumnos";
+    protected final static String CALIFICAR_ALUMNO_PATH = "calificar";
+    protected final static String ESTADO_MATERIA_PATH = "materias/estado";
+
+    protected boolean aprobo;
+    protected float notaFinal;
+
     protected HttpClient createHttpClient() {
         SSLContext sslContext = null;
         try {
@@ -65,6 +73,56 @@ public class FlujoBasicoFixture extends JsonFixture {
         client = createHttpClient();
         this.targetUrl = new EnvFixture().targetUrl();
         this.reset();
+    }
+
+    public boolean altaMateriaCodigoDocenteCupoModalidad(String materia, String codigoMateria, String docente, int cupo, String modalidad) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+      this.materia = materia;
+      this.codigoMateria = codigoMateria;
+      this.docente = docente;
+      this.cupo = cupo;
+      this.modalidad = modalidad;
+      return this.submitPost(ALTA_MATERIA_PATH, this.prepararRequestAltaMateria());
+    }
+
+    public boolean inscribirAlumnoUsernameMateria(String alumno, String username, String codigoMateria) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+      this.alumno = alumno;
+      this.username = username;
+      this.codigoMateria = codigoMateria;
+      return this.submitPost(INSCRIBIR_ALUMNO_PATH, this.prepararInscripcionAlumno());
+    }
+
+    public boolean calificarMateriaNotas(String username, String codigoMateria, String notas) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+      this.username = username;
+      this.codigoMateria = codigoMateria;
+      this.notas = notas;
+      return this.submitPost(CALIFICAR_ALUMNO_PATH, this.prepararCalificarAlumno());
+    }
+
+    public boolean aprobo() throws IOException {
+      String query = "?username=" + this.username + "&codigoMateria=" + this.codigoMateria;
+      HttpGet request = new HttpGet(this.targetUrl + ESTADO_MATERIA_PATH + query);
+      HttpResponse response = client.execute(request);
+      if (response == null) return false;
+      if (response.getStatusLine().getStatusCode() >= 300) return false;
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
+      this.aprobo = Boolean.valueOf(result.get("aprobada").toString());
+      this.notaFinal = Float.parseFloat(result.get("nota_final").toString());
+      return true;
+    }
+
+    public float notaFinal() {
+        return this.notaFinal;
+    }
+
+    private boolean submitPost(String path, String body) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+      this.client = createHttpClient();
+      HttpPost request = new HttpPost(this.targetUrl + path);
+      HttpEntity entity = new StringEntity(body, ContentType.APPLICATION_JSON);
+      request.setEntity(entity);
+      HttpResponse response = client.execute(request);
+      if (response == null) return false;
+      return true;
     }
 
     public boolean numero(String numero) {
@@ -114,4 +172,3 @@ public class FlujoBasicoFixture extends JsonFixture {
         return this.cantidadLlamadas;
     }
 }
-
