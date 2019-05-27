@@ -1,8 +1,7 @@
 package guarabot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -28,12 +27,8 @@ public class FlujoBasicoFixture extends JsonFixture {
 
     protected static final String RESET_PATH = "reset";
     protected final String targetUrl;
-    protected final static String LLAMADAS_PATH = "llamadas";
-    protected final static String FACTURACION_PATH = "facturacion";
+    protected final String apiToken;
     protected HttpClient client;
-    protected int cantidadLlamadas;
-    protected float costoTotal;
-
     protected final static String ALTA_MATERIA_PATH = "materias";
     protected final static String INSCRIBIR_ALUMNO_PATH = "alumnos";
     protected final static String CALIFICAR_ALUMNO_PATH = "calificar";
@@ -72,6 +67,7 @@ public class FlujoBasicoFixture extends JsonFixture {
     public FlujoBasicoFixture() throws IOException {
         client = createHttpClient();
         this.targetUrl = new EnvFixture().targetUrl();
+        this.apiToken = new EnvFixture().apiToken();
         this.reset();
     }
 
@@ -84,23 +80,24 @@ public class FlujoBasicoFixture extends JsonFixture {
       return this.submitPost(ALTA_MATERIA_PATH, this.prepararRequestAltaMateria());
     }
 
-    public boolean inscribirAlumnoUsernameMateria(String alumno, String username, String codigoMateria) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-      this.alumno = alumno;
-      this.username = username;
+    public boolean inscribirAlumnoUsernameAlumnoMateria(String nombreAlumno, String usernameAlumno, String codigoMateria) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+      this.alumno = nombreAlumno;
+      this.usernameAlumno = usernameAlumno;
       this.codigoMateria = codigoMateria;
       return this.submitPost(INSCRIBIR_ALUMNO_PATH, this.prepararInscripcionAlumno());
     }
 
-    public boolean calificarMateriaNotas(String username, String codigoMateria, String notas) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-      this.username = username;
+    public boolean calificarAlumnoMateriaNotas(String usernameAlumno, String codigoMateria, String notas) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+      this.usernameAlumno = usernameAlumno;
       this.codigoMateria = codigoMateria;
       this.notas = notas;
       return this.submitPost(CALIFICAR_ALUMNO_PATH, this.prepararCalificarAlumno());
     }
 
     public boolean aprobo() throws IOException {
-      String query = "?username=" + this.username + "&codigoMateria=" + this.codigoMateria;
+      String query = "?usernameAlumno=" + this.usernameAlumno + "&codigoMateria=" + this.codigoMateria;
       HttpGet request = new HttpGet(this.targetUrl + ESTADO_MATERIA_PATH + query);
+      request.addHeader(this.getTokenHeader());
       HttpResponse response = client.execute(request);
       if (response == null) return false;
       if (response.getStatusLine().getStatusCode() >= 300) return false;
@@ -111,6 +108,25 @@ public class FlujoBasicoFixture extends JsonFixture {
       return true;
     }
 
+    private Header getTokenHeader() {
+        return new Header() {
+            @Override
+            public String getName() {
+                return "api_token";
+            }
+
+            @Override
+            public String getValue() {
+                return apiToken;
+            }
+
+            @Override
+            public HeaderElement[] getElements() throws ParseException {
+                return new HeaderElement[0];
+            }
+        };
+    }
+
     public float notaFinal() {
         return this.notaFinal;
     }
@@ -118,29 +134,12 @@ public class FlujoBasicoFixture extends JsonFixture {
     private boolean submitPost(String path, String body) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
       this.client = createHttpClient();
       HttpPost request = new HttpPost(this.targetUrl + path);
+      request.addHeader(this.getTokenHeader());
       HttpEntity entity = new StringEntity(body, ContentType.APPLICATION_JSON);
       request.setEntity(entity);
       HttpResponse response = client.execute(request);
       if (response == null) return false;
       return true;
-    }
-
-    public boolean numero(String numero) {
-        this.numeroOrigen = numero.trim();
-        return true;
-    }
-
-    public boolean destinoInicioFin(String numero, String inicio, String fin) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-        this.numeroDestino = numero.trim();
-        this.fechaHoraInicio = inicio;
-        this.fechaHoraFin = fin;
-        this.client = createHttpClient();
-        HttpPost request = new HttpPost(this.targetUrl + LLAMADAS_PATH);
-        HttpEntity entity = new StringEntity(this.prepararRequestLlamada(), ContentType.APPLICATION_JSON);
-        request.setEntity(entity);
-        HttpResponse response = client.execute(request);
-        if (response == null) return false;
-        return true;
     }
 
 
@@ -151,24 +150,4 @@ public class FlujoBasicoFixture extends JsonFixture {
         HttpResponse response = client.execute(request);
     }
 
-    public boolean facturar(String mes) throws IOException {
-        String query = "?numero=" + java.net.URLEncoder.encode(this.numeroOrigen, "UTF-8") + "&mes=" + mes;
-        HttpGet request = new HttpGet(this.targetUrl + FACTURACION_PATH + query);
-        HttpResponse response = client.execute(request);
-        if (response == null) return false;
-        if (response.getStatusLine().getStatusCode() >= 300) return false;
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
-        this.cantidadLlamadas = Integer.parseInt(result.get("cantidad_llamadas").toString());
-        this.costoTotal = Float.parseFloat(result.get("costo_total").toString());
-        return true;
-    }
-
-    public float montoAPagar() {
-        return this.costoTotal;
-    }
-
-    public float cantidadLlamadas() {
-        return this.cantidadLlamadas;
-    }
 }

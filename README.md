@@ -1,8 +1,13 @@
 # guarabot
 
+Para ejecutar usando maven:
+
+base_url=http://requestbin.fullcontact.com/1me7bke1/ api_token=zaraza_token mvn clean verify -P wiki
+
+
 Para ejecutar usando docker:
 
-docker run --rm -p8080:8080 -ebase_url=https://postb.in/LKwEUuod/ registry.gitlab.com/fiuba-memo2/guarabot:latest
+docker run --rm -p8080:8080 -ebase_url=https://postb.in/LKwEUuod/ -eapi_token=zaraza_token registry.gitlab.com/fiuba-memo2/guarabot:latest
 
 http://localhost:8080/GuaraBot
 
