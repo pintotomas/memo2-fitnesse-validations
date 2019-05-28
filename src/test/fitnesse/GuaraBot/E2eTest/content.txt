@@ -1,0 +1,10 @@
+!1 End-to-End Tests Guarabot
+
+
+Scenario e2e1: Inscripcion exitosa
+Given la materia "9521" con cupos 10 cupos
+When @juanperez envia "/inscribir 9521"
+Then recibe "inscripcion ok"
+And @juanperez esta inscripto en 9521
+And "9521" tiene 1 inscripto
+And "9521" tiene 9 cupos disponibles

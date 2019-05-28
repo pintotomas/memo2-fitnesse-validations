@@ -36,6 +36,7 @@ public class FlujoBasicoFixture extends JsonFixture {
 
     protected boolean aprobo;
     protected float notaFinal;
+    protected HttpResponse response;
 
     protected HttpClient createHttpClient() {
         SSLContext sslContext = null;
@@ -137,8 +138,8 @@ public class FlujoBasicoFixture extends JsonFixture {
       request.addHeader(this.getTokenHeader());
       HttpEntity entity = new StringEntity(body, ContentType.APPLICATION_JSON);
       request.setEntity(entity);
-      HttpResponse response = client.execute(request);
-      if (response == null) return false;
+      this.response = client.execute(request);
+      if (this.response == null) return false;
       return true;
     }
 
@@ -150,4 +151,18 @@ public class FlujoBasicoFixture extends JsonFixture {
         HttpResponse response = client.execute(request);
     }
 
+    public int status() throws IOException {
+        return this.response.getStatusLine().getStatusCode();
+    }
+
+    public String error() throws IOException {
+        if (this.response == null)
+            return "ERROR_DESCONOCIDO";
+        if (this.response.getStatusLine().getStatusCode() == 400) {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
+            return result.get("error").toString();
+        }
+        return response.getEntity().getContent().toString();
+    }
 }

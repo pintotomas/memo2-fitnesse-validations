@@ -28,7 +28,7 @@ Definición de modalidad de aprobación de materia:
  * por tareas: hay N tareas, el promedio debe ser mayor a 6 y solo 2 pueden tener nota menor a 4
  * por coloquio: es una única nota y se aprueba con 4 o más.
 
-!2 Flujo básico
+!2 Flujo básico API Rest
 
 FB1: Materia con modalidad de parciales aprobada
 
@@ -83,6 +83,7 @@ FB6: Materia con modalidad de coloquio desaprobada
 |calificar alumno|juanperez          |materia |1001     |notas  |1                                         |
 |check           |aprobo             |false                                                                |
 |check           |nota final         |~=1.0                                                                |
+
 
 !contents -R2
 !*> '''Variables Defined'''
