@@ -46,7 +46,7 @@ public class FlujoBasicoFixture extends JsonFixture {
       return this.submitPost(INSCRIBIR_ALUMNO_PATH, this.prepararInscripcionAlumno());
     }
 
-    public boolean calificarAlumnoMateriaNotas(String usernameAlumno, String codigoMateria, String notas) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    public boolean  calificarAlumnoMateriaNotas(String usernameAlumno, String codigoMateria, String notas) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
       this.usernameAlumno = usernameAlumno;
       this.codigoMateria = codigoMateria;
       this.notas = notas;
@@ -84,5 +84,13 @@ public class FlujoBasicoFixture extends JsonFixture {
             return result.get("error").toString();
         }
         return response.getEntity().getContent().toString();
+    }
+
+    public String resultado() throws IOException {
+        if (this.response == null)
+            return "SIN_RESPUESTA";
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
+        return result.get("resultado").toString();
     }
 }

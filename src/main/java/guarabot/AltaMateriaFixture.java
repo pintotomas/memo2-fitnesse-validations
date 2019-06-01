@@ -29,10 +29,6 @@ public class AltaMateriaFixture extends JsonFixture {
         this.apiToken = new EnvFixture().apiToken();
     }
 
-    public void setCaso(String caso) {
-        // fake
-    }
-
     public void setCodigo(String codigo) {
         this.codigoMateria = codigo;
     }
@@ -63,7 +59,7 @@ public class AltaMateriaFixture extends JsonFixture {
 
     public String valido() throws RuntimeException, IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         this.submitPost(ALTA_MATERIA_PATH, this.prepararRequestAltaMateria());
-        String resultado = response.getStatusLine().getStatusCode() == 201 ? "si": "no";
+        String resultado = response.getStatusLine().getStatusCode() == 201 ? "si,": "no,";
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
         resultado += result.get("resultado").toString();

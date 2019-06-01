@@ -1,0 +1,75 @@
+
+|import |
+|guarabot|
+
+!|EnvFixture|
+|target url?|api token?|
+|$VALUE=    |$VALUE=  |
+*!
+
+
+!2 Calificar Alumno
+
+!3 ca1: Caso correcto: calificar con una nota
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|10|
+|check           | status         | 200 |
+|check           | resultado      | notas_creadas |
+
+!3 ca2: Caso correcto: calificar con varias notas
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|[10, 7]|
+|check           | status         | 200 |
+|check           | resultado      | notas_creadas |
+
+!3 ca3: Caso incorrecto: calificar con una nota mayor a 10
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|11|
+|check           | status         | 400 |
+|check           | error          | NOTA_INVALIDA |
+
+
+!3 ca4: Caso incorrecto: calificar con una nota negativa
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|-1|
+|check           | status         | 400 |
+|check           | error          | NOTA_INVALIDA |
+
+!3 ca5: Caso incorrecto: calificar con una nota no numerica
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|aprobado|
+|check           | status         | 400 |
+|check           | error          | NOTA_INVALIDA |
+
+!3 ca6: Caso incorrecto: calificar sin una nota
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas||
+|check           | status         | 400 |
+|check           | error          | NOTA_INVALIDA |
+
+!3 ca7: Caso incorrecto: calificar con array de notas vacio
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|[]|
+|check           | status         | 400 |
+|check           | error          | NOTA_INVALIDA |
