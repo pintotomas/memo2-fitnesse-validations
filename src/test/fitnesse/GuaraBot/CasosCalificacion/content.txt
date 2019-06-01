@@ -10,15 +10,66 @@
 
 !2 Calificar Alumno
 
-Cada uno de los casos de calificación parte de la crear una materia (Algo1; 7544) y un alumno (juanperez) inscripto en la materia.
-En los casos correcto se devuelve un status 201
-En los casos de error se devuelve un status 400.
+!3 ca1: Caso correcto: calificar con una nota
 
-!|CalificacionFixture|
-|# caso                                              | materia |  alumno        | notas      | resultado?             |
-|  ca1: caso correcto, calificar con 1 nota          |  9521   |  juanperez     | [10]       | OK                     |
-|  ca2: caso correcto, calificar con varias notas    |  9521   |  juanperez     |  [10,5]    | OK                     |
-|  ca3: error, nota mayor a 10                       |  9521   |  juanperez     |  [11]      | ERROR_NOTA_INVALIDA  |
-|  ca4: error, nota      negativa                    |  9521   |  juanperez     |  [11]      | ERROR_NOTA_INVALIDA    |
-|  ca5: error, nota no numerica                      |  9521   |  juanperez     |  [aa]      | ERROR_NOTA_INVALIDA     |
-|  ca6: error, nota vacia                            |  9521   |  juanperez     |  []        | ERROR_NOTA_INVALIDA    |
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|10|
+|check           | status         | 200 |
+|check           | resultado      | notas_creadas |
+
+!3 ca2: Caso correcto: calificar con varias notas
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|[10, 7]|
+|check           | status         | 200 |
+|check           | resultado      | notas_creadas |
+
+!3 ca3: Caso incorrecto: calificar con una nota mayor a 10
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|11|
+|check           | status         | 400 |
+|check           | error          | NOTA_INVALIDA |
+
+
+!3 ca4: Caso incorrecto: calificar con una nota negativa
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|-1|
+|check           | status         | 400 |
+|check           | error          | NOTA_INVALIDA |
+
+!3 ca5: Caso incorrecto: calificar con una nota no numerica
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|aprobado|
+|check           | status         | 400 |
+|check           | error          | NOTA_INVALIDA |
+
+!3 ca6: Caso incorrecto: calificar sin una nota
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas||
+|check           | status         | 400 |
+|check           | error          | NOTA_INVALIDA |
+
+!3 ca7: Caso incorrecto: calificar con array de notas vacio
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|calificar alumno| juanperez   |materia| 1001  |notas|[]|
+|check           | status         | 400 |
+|check           | error          | NOTA_INVALIDA |
