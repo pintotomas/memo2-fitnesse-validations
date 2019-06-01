@@ -1,5 +1,7 @@
 !1 End-to-End Tests Guarabot
 
+Estas pruebas son para ejecucion manual.
+
 
 Scenario e2e1: Inscripcion exitosa
 Given la materia "9521" con cupos 10 cupos
@@ -8,3 +10,13 @@ Then recibe "inscripcion ok"
 And @juanperez esta inscripto en 9521
 And "9521" tiene 1 inscripto
 And "9521" tiene 9 cupos disponibles
+
+Escenario e2e2: Consulta de oferta
+Dada la materia "Algo1" con codigo "7540" y 20 cupos
+Y la materia "Algo2" con codigo "7541" y 10 cupos
+Y la materia "Algo3" con codigo "7507" y 5 cupos
+Cuando @juanperez envia "/oferta"
+Entonces recibe:
+    7540:Algo1
+    7541:Algo2
+    7507:Algo3
