@@ -77,7 +77,7 @@ public class FlujoBasicoFixture extends JsonFixture {
 
     public String error() throws IOException {
         if (this.response == null)
-            return "SIN_RESPUESTA";
+            return "ERROR_DESCONOCIDO";
         if (this.response.getStatusLine().getStatusCode() == 400) {
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
@@ -88,7 +88,7 @@ public class FlujoBasicoFixture extends JsonFixture {
 
     public String resultado() throws IOException {
         if (this.response == null)
-            return "ERROR_DESCONOCIDO";
+            return "SIN_RESPUESTA";
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
         return result.get("resultado").toString();
