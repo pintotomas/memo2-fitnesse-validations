@@ -67,4 +67,4 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
 |inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|9521|
 |check           | status         | 201 |
-|check           | resultado          | inscripcion_creada |
+|check           | resultado      | inscripcion_creada |
