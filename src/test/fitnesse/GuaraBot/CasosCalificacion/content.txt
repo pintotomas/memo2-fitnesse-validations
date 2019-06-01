@@ -1,0 +1,24 @@
+
+|import |
+|guarabot|
+
+!|EnvFixture|
+|target url?|api token?|
+|$VALUE=    |$VALUE=  |
+*!
+
+
+!2 Calificar Alumno
+
+Cada uno de los casos de calificación parte de la crear una materia (Algo1; 7544) y un alumno (juanperez) inscripto en la materia.
+En los casos correcto se devuelve un status 201
+En los casos de error se devuelve un status 400.
+
+!|CalificacionFixture|
+|# caso                                              | materia |  alumno        | notas      | resultado?             |
+|  ca1: caso correcto, calificar con 1 nota          |  9521   |  juanperez     | [10]       | OK                     |
+|  ca2: caso correcto, calificar con varias notas    |  9521   |  juanperez     |  [10,5]    | OK                     |
+|  ca3: error, nota mayor a 10                       |  9521   |  juanperez     |  [11]      | ERROR_NOTA_INVALIDA  |
+|  ca4: error, nota      negativa                    |  9521   |  juanperez     |  [11]      | ERROR_NOTA_INVALIDA    |
+|  ca5: error, nota no numerica                      |  9521   |  juanperez     |  [aa]      | ERROR_NOTA_INVALIDA     |
+|  ca6: error, nota vacia                            |  9521   |  juanperez     |  []        | ERROR_NOTA_INVALIDA    |

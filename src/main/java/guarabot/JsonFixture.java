@@ -131,6 +131,9 @@ public class JsonFixture {
                 .build();
     }
 
+    public void setCaso(String caso) {
+        // fake
+    }
 
     public void reset(){
         HttpPost request = new HttpPost(this.targetUrl + RESET_PATH);
