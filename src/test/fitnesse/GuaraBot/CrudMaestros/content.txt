@@ -62,6 +62,14 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |check           | error          | CUPO_COMPLETO |
 
 
+!3 i4: Inscripcion creada correctamente
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|9521|
+|check           | status         | 201 |
+|check           | resultado      | inscripcion_creada |
+
+
 !2 Calificar Alumno
 
 !3 ca1: Caso correcto: calificar con una nota
@@ -125,3 +133,10 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |calificar alumno| juanperez   |materia| 1001  |notas|[]|
 |check           | status         | 400 |
 |check           | error          | NOTA_INVALIDA |
+
+!3 i4: Inscripcion creada correctamente
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|9521|
+|check           | status         | 201 |
+|check           | resultado      | inscripcion_creada |
