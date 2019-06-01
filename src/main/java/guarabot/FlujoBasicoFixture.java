@@ -71,14 +71,6 @@ public class FlujoBasicoFixture extends JsonFixture {
         return this.notaFinal;
     }
 
-
-    protected void reset() throws IOException {
-        HttpPost request = new HttpPost(this.targetUrl + RESET_PATH);
-        HttpEntity entity = new StringEntity("", ContentType.APPLICATION_JSON);
-        request.setEntity(entity);
-        HttpResponse response = client.execute(request);
-    }
-
     public int status() throws IOException {
         return this.response.getStatusLine().getStatusCode();
     }
