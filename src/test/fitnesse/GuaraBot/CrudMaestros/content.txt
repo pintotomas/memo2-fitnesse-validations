@@ -3,20 +3,24 @@
 |guarabot|
 
 !|EnvFixture|
-|target url?|
-|$VALUE=    |
+|target url?|api token?|
+|$VALUE=    |$VALUE=  |
 *!
 
 El cupo maximo es 300 porque esa es la capacidad máxima de aulas.
 Dado que todos los laboratorios tienen proyector no es válido que una materia requiere ambas cosas (laboratorio y proyector)
+Protocolo:
+ok => status=201 {"resultado":"materia_creada"}
+error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaje especifico de error)
+
 
 !2 Alta materia
 
 !|AltaMateriaFixture|
 |# caso   | codigo |  nombre        | docente        | cupo | modalidad  | con proyector | con laboratorio | valido? |
-|  am1: caso correcto 1    |  9521  |  memo2         | Nico Paez      |  30  | parciales  |      si       |       no        |   si    |
-|  am2: invalido cupo excedido    |  7509  |  memo1         | Sergio Vi      |  500 | parciales  |      si       |       no        |   no    |
-|  am3: invalido proy y labo    |  7541  |  algo1         | Rosita W       |  500 | parciales  |      si       |       si        |   no    |
+|  am1: caso correcto 1    |  9521  |  memo2         | Nico Paez      |  30  | parciales  |      si       |       no        |   si,materia_creada    |
+|  am2: invalido cupo excedido    |  7509  |  memo1         | Sergio Vi      |  500 | parciales  |      si       |       no        |   no,cupo_excedido    |
+|  am3: invalido proy y labo    |  7541  |  algo1         | Rosita W       |  500 | parciales  |      si       |       si        |   no,pedidos_incompatibles    |
 
 !3 am4: el codigo de materia es unico
 !|script         |FlujoBasicoFixture                                                                       |
