@@ -64,7 +64,7 @@ public class FlujoBasicoFixture extends JsonFixture {
       Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
       this.aprobo = Boolean.valueOf(result.get("aprobada").toString());
       this.notaFinal = Float.parseFloat(result.get("nota_final").toString());
-      return true;
+      return this.aprobo;
     }
 
     public float notaFinal() {
