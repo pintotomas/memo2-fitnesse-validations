@@ -29,6 +29,29 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |check           | status         | 400 |
 |check           | error          | MATERIA_DUPLICADA |
 
+!3 am5: el codigo de materia no supera los 4 digitos
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  | 95211     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|check           | status         | 400 |
+|check           | error          | CODIGO_ERRONEO |
+
+!3 am6: el codigo de materia no es nulo
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|check           | status         | 400 |
+|check           | error          | CODIGO_ERRONEO |
+
+!3 am7: el nombre de la materia no supera los 50 caracteres
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Metodos y modelos de la ingenieria de software dos y medio|codigo  | 9521     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|check           | status         | 400 |
+|check           | error          | NOMBRE_ERRONEO |
+
+!3 am8: el nombre de la materia no es nulo
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | |codigo  | 9521     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|check           | status         | 400 |
+|check           | error          | NOMBRE_ERRONEO |
 
 
 !2 Inscripciones
