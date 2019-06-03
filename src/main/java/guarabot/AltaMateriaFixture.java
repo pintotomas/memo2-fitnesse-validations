@@ -18,8 +18,6 @@ import java.util.Map;
 public class AltaMateriaFixture extends JsonFixture {
 
     private static final String ERROR_INESPERADO = "ERROR_INESPERADO";
-    private boolean conProyector;
-    private boolean conLaboratorio;
 
     protected final static String ALTA_MATERIA_PATH = "materias";
 
