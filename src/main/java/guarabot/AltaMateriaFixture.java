@@ -29,10 +29,6 @@ public class AltaMateriaFixture extends JsonFixture {
         this.apiToken = new EnvFixture().apiToken();
     }
 
-    public void setCaso(String caso) {
-        // fake
-    }
-
     public void setCodigo(String codigo) {
         this.codigoMateria = codigo;
     }
