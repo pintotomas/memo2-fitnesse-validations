@@ -17,10 +17,10 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 !2 Alta materia
 
 !|AltaMateriaFixture|
-|# caso   | codigo |  nombre        | docente        | cupo | modalidad  | con proyector | con laboratorio | valido? |
-|  am1: caso correcto 1    |  9521  |  memo2         | Nico Paez      |  30  | parciales  |      true       |       false        |   si,materia_creada    |
-|  am2: invalido cupo excedido    |  7509  |  memo1         | Sergio Vi      |  500 | parciales  |      true       |       false        |   no,cupo_excedido    |
-|  am3: invalido proy y labo    |  7541  |  algo1         | Rosita W       |  30 | parciales  |      true       |       true        |   no,pedidos_incompatibles    |
+|# caso                        | codigo |  nombre   | docente        | cupo | modalidad  | con proyector | con laboratorio |   valido?                  |
+|  am1: caso correcto 1        |  9521  |  memo2    | Nico Paez      |  30  | parciales  |      si       |       no        |   si,materia_creada        |
+|  am2: invalido cupo excedido |  7509  |  memo1    | Sergio Vi      |  500 | parciales  |      si       |       no        |   no,cupo_excedido         |
+|  am3: invalido proy y labo   |  7541  |  algo1    | Rosita W       |  30  | parciales  |      si       |       si        |   no,pedidos_incompatibles |
 
 !3 am4: el codigo de materia es unico
 !|script         |FlujoBasicoFixture                                                                       |
@@ -50,17 +50,6 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |inscribir alumno| Matias Firpo   |usernameAlumno| matiasfirpo  |materia|1001|
 |check           | status         | 400 |
 |check           | error          | CUPO_COMPLETO |
-
-
-!3 i3: no pueden aceptarse inscripciones que superen el cupo
-!|script         |FlujoBasicoFixture                                                                       |
-|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
-|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
-|inscribir alumno| Matias Perez   |usernameAlumno| matiasperez  |materia|1001|
-|inscribir alumno| Matias Firpo   |usernameAlumno| matiasfirpo  |materia|1001|
-|check           | status         | 400 |
-|check           | error          | CUPO_COMPLETO |
-
 
 !3 i4: Inscripcion creada correctamente
 !|script         |FlujoBasicoFixture                                                                       |
