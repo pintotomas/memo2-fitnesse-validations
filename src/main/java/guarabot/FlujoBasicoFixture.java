@@ -53,7 +53,7 @@ public class FlujoBasicoFixture extends JsonFixture {
       return this.submitPost(CALIFICAR_ALUMNO_PATH, this.prepararCalificarAlumno());
     }
 
-    public boolean aprobo() throws IOException {
+    public boolean obtenerEstadoMateria() throws IOException {
       String query = "?usernameAlumno=" + this.usernameAlumno + "&codigoMateria=" + this.codigoMateria;
       HttpGet request = new HttpGet(this.targetUrl + ESTADO_MATERIA_PATH + query);
       request.addHeader(this.getTokenHeader());
@@ -65,6 +65,10 @@ public class FlujoBasicoFixture extends JsonFixture {
       this.aprobo = Boolean.valueOf(result.get("aprobada").toString());
       this.notaFinal = Float.parseFloat(result.get("nota_final").toString());
       return true;
+    }
+
+    public boolean aprobo() {
+      return this.aprobo;
     }
 
     public float notaFinal() {
