@@ -21,6 +21,8 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |  am1: caso correcto 1        |  9521  |  memo2    | Nico Paez      |  30  | parciales  |      si       |       no        |   si,materia_creada        |
 |  am2: invalido cupo excedido |  7509  |  memo1    | Sergio Vi      |  500 | parciales  |      si       |       no        |   no,cupo_excedido         |
 |  am3: invalido proy y labo   |  7541  |  algo1    | Rosita W       |  30  | parciales  |      si       |       si        |   no,pedidos_incompatibles |
+|  am9: caso correcto coloquio |  9521  |  memo3    | Emilio Gutter  |  40  | coloquio   |      no       |       no        |   si,materia_creada        |
+|  am10: caso correcto tareas  |  9528  |  TDD      | Nico Paez      |  50  | tareas     |      no       |       no        |   si,materia_creada        |
 
 !3 am4: el codigo de materia es unico
 !|script         |FlujoBasicoFixture                                                                       |
@@ -77,6 +79,20 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 !3 i4: Inscripcion creada correctamente
 !|script         |FlujoBasicoFixture                                                                       |
 |alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|check           | status         | 201 |
+|check           | resultado      | inscripcion_creada |
+
+!3 i5: Inscripcion creada correctamente - coloquio
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|coloquio|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|check           | status         | 201 |
+|check           | resultado      | inscripcion_creada |
+
+!3 i6: Inscripcion creada correctamente - tareas
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|tareas|
 |inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
 |check           | status         | 201 |
 |check           | resultado      | inscripcion_creada |
