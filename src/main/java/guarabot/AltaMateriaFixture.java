@@ -18,8 +18,6 @@ import java.util.Map;
 public class AltaMateriaFixture extends JsonFixture {
 
     private static final String ERROR_INESPERADO = "ERROR_INESPERADO";
-    private boolean conProyector;
-    private boolean conLaboratorio;
 
     protected final static String ALTA_MATERIA_PATH = "materias";
 
@@ -49,12 +47,12 @@ public class AltaMateriaFixture extends JsonFixture {
         this.modalidad = modalidad;
     }
 
-    public void setConProyector(boolean conProyector) {
-        this.conProyector = conProyector;
+    public void setConProyector(String conProyector) {
+        this.conProyector = "si".equals(conProyector);
     }
 
-    public void setConLaboratorio(boolean conLaboratorio) {
-        this.conLaboratorio = conLaboratorio;
+    public void setConLaboratorio(String conLaboratorio) {
+        this.conLaboratorio = "si".equals(conLaboratorio);
     }
 
     public String valido() throws RuntimeException, IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException {

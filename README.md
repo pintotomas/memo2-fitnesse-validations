@@ -11,6 +11,8 @@ docker run --rm -p8080:8080 -ebase_url=https://postb.in/LKwEUuod/ -eapi_token=za
 
 http://localhost:8080/GuaraBot
 
+Para probar los request que se generan al ejecutar los tests se puede usar la herramienta RequestBin: https://requestbin.fullcontact.com/
+
 # Contribuciones
 
 1. Forkear el repositorio

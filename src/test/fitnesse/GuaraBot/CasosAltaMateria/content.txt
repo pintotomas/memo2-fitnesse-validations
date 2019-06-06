@@ -17,10 +17,12 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 !2 Alta materia
 
 !|AltaMateriaFixture|
-|# caso   | codigo |  nombre        | docente        | cupo | modalidad  | con proyector | con laboratorio | valido? |
-|  am1: caso correcto 1    |  9521  |  memo2         | Nico Paez      |  30  | parciales  |      si       |       no        |   si,materia_creada    |
-|  am2: invalido cupo excedido    |  7509  |  memo1         | Sergio Vi      |  500 | parciales  |      si       |       no        |   no,cupo_excedido    |
-|  am3: invalido proy y labo    |  7541  |  algo1         | Rosita W       |  500 | parciales  |      si       |       si        |   no,pedidos_incompatibles    |
+|# caso                        | codigo |  nombre   | docente        | cupo | modalidad  | con proyector | con laboratorio |   valido?                  |
+|  am1: caso correcto 1        |  9521  |  memo2    | Nico Paez      |  30  | parciales  |      si       |       no        |   si,materia_creada        |
+|  am2: invalido cupo excedido |  7509  |  memo1    | Sergio Vi      |  500 | parciales  |      si       |       no        |   no,cupo_excedido         |
+|  am3: invalido proy y labo   |  7541  |  algo1    | Rosita W       |  30  | parciales  |      si       |       si        |   no,pedidos_incompatibles |
+|  am9: caso correcto coloquio |  9521  |  memo3    | Emilio Gutter  |  40  | coloquio   |      no       |       no        |   si,materia_creada        |
+|  am10: caso correcto tareas  |  9528  |  TDD      | Nico Paez      |  50  | tareas     |      no       |       no        |   si,materia_creada        |
 
 !3 am4: el codigo de materia es unico
 !|script         |FlujoBasicoFixture                                                                       |
@@ -29,6 +31,29 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |check           | status         | 400 |
 |check           | error          | MATERIA_DUPLICADA |
 
+!3 am5: el codigo de materia no supera los 4 digitos
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  | 95211     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|check           | status         | 400 |
+|check           | error          | CODIGO_ERRONEO |
+
+!3 am6: el codigo de materia no es nulo
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|check           | status         | 400 |
+|check           | error          | CODIGO_ERRONEO |
+
+!3 am7: el nombre de la materia no supera los 50 caracteres
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Metodos y modelos de la ingenieria de software dos y medio|codigo  | 9521     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|check           | status         | 400 |
+|check           | error          | NOMBRE_ERRONEO |
+
+!3 am8: el nombre de la materia no es nulo
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | |codigo  | 9521     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|check           | status         | 400 |
+|check           | error          | NOMBRE_ERRONEO |
 
 
 !2 Inscripciones
@@ -51,20 +76,23 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |check           | status         | 400 |
 |check           | error          | CUPO_COMPLETO |
 
-
-!3 i3: no pueden aceptarse inscripciones que superen el cupo
-!|script         |FlujoBasicoFixture                                                                       |
-|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
-|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
-|inscribir alumno| Matias Perez   |usernameAlumno| matiasperez  |materia|1001|
-|inscribir alumno| Matias Firpo   |usernameAlumno| matiasfirpo  |materia|1001|
-|check           | status         | 400 |
-|check           | error          | CUPO_COMPLETO |
-
-
 !3 i4: Inscripcion creada correctamente
 !|script         |FlujoBasicoFixture                                                                       |
 |alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|check           | status         | 201 |
+|check           | resultado      | inscripcion_creada |
+
+!3 i5: Inscripcion creada correctamente - coloquio
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|coloquio|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
+|check           | status         | 201 |
+|check           | resultado      | inscripcion_creada |
+
+!3 i6: Inscripcion creada correctamente - tareas
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|tareas|
 |inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|1001|
 |check           | status         | 201 |
 |check           | resultado      | inscripcion_creada |

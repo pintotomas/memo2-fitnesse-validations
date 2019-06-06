@@ -37,6 +37,8 @@ public class JsonFixture {
     protected String docente;
     protected int cupo;
     protected String modalidad;
+    protected boolean conProyector;
+    protected boolean conLaboratorio;
 
     protected String alumno;
     protected String usernameAlumno;
@@ -51,6 +53,8 @@ public class JsonFixture {
         data.put("docente", this.docente);
         data.put("cupo", this.cupo);
         data.put("modalidad", this.modalidad);
+        data.put("proyector", this.conProyector);
+        data.put("laboratorio", this.conLaboratorio);
         return mapper.writeValueAsString(data);
     }
 
