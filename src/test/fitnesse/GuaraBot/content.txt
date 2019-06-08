@@ -101,6 +101,15 @@ FB6: Materia con modalidad de coloquio desaprobada
 |check           |nota final         |~=1.0                                                                |
 
 
+AT1: Api Token inválido
+
+!|script         |FlujoBasicoFixture                                                                       |
+|api token       |zaraza_token_123                                                                         |
+|alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|coloquio |
+|check           | status         | 401 |
+|check           | error          | API_TOKEN_INVALIDO |
+
+
 !contents -R2
 !*> '''Variables Defined'''
 !define TEST_SYSTEM {slim}
