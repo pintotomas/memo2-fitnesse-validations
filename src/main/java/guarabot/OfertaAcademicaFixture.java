@@ -37,13 +37,30 @@ public class OfertaAcademicaFixture extends FlujoBasicoFixture {
 		ofertaAcademica = mapper.convertValue(json, mapper.getTypeFactory().constructCollectionType(List.class, Materia.class));
 		return true;
 	}
-	
+
 	public int cantidadDeMateriasEnLaOfertaAcademica() {
 		return this.ofertaAcademica.size();
 	}
-	
+
 	public boolean ofertaAcademicaIncluyeCodigo(String codigo) {
 		return this.ofertaAcademica.stream()
 				.anyMatch(materia -> materia.getCodigo().equals(codigo));
 	}
+
+	public boolean ofertaAcademicaIncluyeNombre(String nombre) {
+		return this.ofertaAcademica.stream()
+				.anyMatch(materia -> materia.getNombre().equals(nombre));
+	}
+
+	public boolean ofertaAcademicaIncluyeModalidad(String modalidad) {
+		return this.ofertaAcademica.stream()
+				.anyMatch(materia -> materia.getModalidad().equals(modalidad));
+	}
+
+	public boolean ofertaAcademicaIncluyeCupo(String cupo) {
+		return this.ofertaAcademica.stream()
+				.anyMatch(materia -> materia.getCupo().equals(cupo));
+	}
+
+
 }
