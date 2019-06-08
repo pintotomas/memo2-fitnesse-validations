@@ -105,6 +105,7 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |consultar oferta|
 |check           | cantidad de materias en la oferta academica | 1 |
 |check           | oferta academica incluye codigo | 1001 | true |
+|check           | cupos disponibles | 1001 | 2  |
 
 !3 oa2: Dos materias
 !|script         |OfertaAcademicaFixture                                                                       |
@@ -114,4 +115,20 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |check           | cantidad de materias en la oferta academica | 2 |
 |check           | oferta academica incluye codigo | 1001 | false |
 |check           | oferta academica incluye codigo | 7507 | true  |
+|check           | cupos disponibles | 7507 | 50  |
 |check           | oferta academica incluye codigo | 7510 | true  |
+|check           | cupos disponibles | 7510 | 60  |
+
+!3 oa3: No hay materias
+!|script         |OfertaAcademicaFixture                                                                       |
+|consultar oferta|
+|check           | cantidad de materias en la oferta academica | 0 |
+
+!3 oa4: Cupos disponibles disminuye al inscribirse
+!|script         |OfertaAcademicaFixture                                                                       |
+|alta materia    | Algo3 |codigo  |7507     |Docente|Carlos Fontela|cupo|50|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|7507|
+|consultar oferta|
+|check           | cantidad de materias en la oferta academica | 1 |
+|check           | oferta academica incluye codigo | 7507 | true |
+|check           | cupos disponibles | 7507 | 49  |
