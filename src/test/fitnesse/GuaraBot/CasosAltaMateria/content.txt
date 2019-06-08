@@ -115,3 +115,24 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |check           | oferta academica incluye codigo | 1001 | false |
 |check           | oferta academica incluye codigo | 7507 | true  |
 |check           | oferta academica incluye codigo | 7510 | true  |
+
+!3 oa3: Oferta academica incluye nombre
+!|script         |OfertaAcademicaFixture                                                                       |
+|alta materia    | Aninfo|codigo  |7505     |Docente|Sergio Villagra|cupo|10|modalidad|parciales|
+|consultar oferta|
+|check           | cantidad de materias en la oferta academica | 1 |
+|check           | oferta academica incluye nombre | Aninfo | true |
+
+!3 oa4: Oferta academica incluye modalidad
+!|script         |OfertaAcademicaFixture                                                                       |
+|alta materia    | Aninfo|codigo  |7505     |Docente|Sergio Villagra|cupo|10|modalidad|parciales|
+|consultar oferta|
+|check           | cantidad de materias en la oferta academica | 1 |
+|check           | oferta academica incluye modalidad | parciales | true |
+
+!3 oa5: Oferta academica incluye cupo
+!|script         |OfertaAcademicaFixture                                                                       |
+|alta materia    | Aninfo|codigo  |7505     |Docente|Sergio Villagra|cupo|10|modalidad|parciales|
+|consultar oferta|
+|check           | cantidad de materias en la oferta academica | 1 |
+|check           | oferta academica incluye cupo | 10 | true |
