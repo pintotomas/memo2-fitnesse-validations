@@ -24,7 +24,7 @@ Escenario e2e2: Consultar notas: materia aprobada
 Dada la materia "Algo1" con codigo "7540", 20 cupos y de modalidad "final"
 Y que "juanperez" está inscripto en la materia "7540"
 Y que "juanperez" aprobó la materia "7540" con "[10]"
-Cuando @juanperez envia "/oferta 7540"
+Cuando @juanperez envia "/estado 7540"
 Entonces recibe:
     Estado: Aprobada
     Nota: 10
@@ -33,7 +33,7 @@ Escenario e2e2: Consultar notas: materia desaprobada
 Dada la materia "Algo1" con codigo "7540", 20 cupos y de modalidad "final"
 Y que "juanperez" está inscripto en la materia "7540"
 Y que "juanperez" aprobó la materia "7540" con "[3]"
-Cuando @juanperez envia "/oferta 7540"
+Cuando @juanperez envia "/estado 7540"
 Entonces recibe:
     Estado: Desaprobada
     Nota: 3
@@ -41,12 +41,12 @@ Entonces recibe:
 Escenario e2e2: Consultar notas: materia en curso
 Dada la materia "Algo1" con codigo "7540", 20 cupos y de modalidad "final"
 Y que "juanperez" está inscripto en la materia "7540"
-Cuando @juanperez envia "/oferta 7540"
+Cuando @juanperez envia "/estado 7540"
 Entonces recibe:
     Estado: En curso
 
 Escenario e2e2: Consultar notas: no inscripto
 Dada la materia "Algo1" con codigo "7540", 20 cupos y de modalidad "final"
-Cuando @juanperez envia "/oferta 7540"
+Cuando @juanperez envia "/estado 7540"
 Entonces recibe:
     Estado: No inscripto
