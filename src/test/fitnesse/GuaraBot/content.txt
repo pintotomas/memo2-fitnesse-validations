@@ -47,7 +47,7 @@ FB2: Materia con modalidad de parciales desaprobada
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |[4,2]                                     |
 |obtener estado alumno|juanperez    |materia |1001|
-|check           |aprobo             |DESPAROBADO                                                          |
+|check           |aprobo             |DESAPROBADO                                                          |
 |check           |nota final         |~=3.0                                                                |
 
 FB3: Materia con modalidad de tareas desaprobada
@@ -57,7 +57,7 @@ FB3: Materia con modalidad de tareas desaprobada
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |[4,6,8,1]                                 |
 |obtener estado alumno|juanperez    |materia |1001|
-|check           |aprobo             |DESPAROBADO                                                          |
+|check           |aprobo             |DESAPROBADO                                                          |
 |check           |nota final         |~=4.75                                                               |
 
 FB3.1: Materia con modalidad de tareas aprobada
@@ -77,7 +77,7 @@ FB4: Materia con modalidad de tareas desaprobada
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |[4,3,6,8,1,1]                             |
 |obtener estado alumno|juanperez    |materia |1001|
-|check           |aprobo             |DESPAROBADO                                                          |
+|check           |aprobo             |DESAPROBADO                                                          |
 |check           |nota final         |~=1.00                                                               |
 
 FB5: Materia con modalidad de coloquio aprobada
@@ -97,7 +97,7 @@ FB6: Materia con modalidad de coloquio desaprobada
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |1                                         |
 |obtener estado alumno|juanperez    |materia |1001|
-|check           |aprobo             |DESPAROBADO                                                          |
+|check           |aprobo             |DESAPROBADO                                                          |
 |check           |nota final         |~=1.0                                                                |
 
 FB7: Materia en curso
