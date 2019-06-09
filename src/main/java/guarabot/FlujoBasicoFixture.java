@@ -62,7 +62,7 @@ public class FlujoBasicoFixture extends JsonFixture {
       if (response.getStatusLine().getStatusCode() >= 300) return false;
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
-      this.estado = String.valueOf(result.get("estdado").toString());
+      this.estado = String.valueOf(result.get("estado").toString());
       this.notaFinal = null;
       if (result.get("nota_final") != null) {
         this.notaFinal = Float.parseFloat(result.get("nota_final").toString());
