@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.stream.Collectors;
 
 public class OfertaAcademicaFixture extends FlujoBasicoFixture {
 
@@ -47,4 +48,10 @@ public class OfertaAcademicaFixture extends FlujoBasicoFixture {
 		return this.ofertaAcademica.stream()
 				.anyMatch(materia -> materia.getCodigo().equals(codigo));
 	}
+
+	public String cuposDisponibles(String codigo) {
+		return this.ofertaAcademica.stream()
+		.filter(materia -> materia.getCodigo().equals(codigo)).collect(Collectors.toList()).get(0).getCupo();
+	}
+	
 }
