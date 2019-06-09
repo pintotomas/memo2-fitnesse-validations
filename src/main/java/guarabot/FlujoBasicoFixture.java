@@ -20,7 +20,7 @@ public class FlujoBasicoFixture extends JsonFixture {
     protected final static String CALIFICAR_ALUMNO_PATH = "calificar";
     protected final static String ESTADO_MATERIA_PATH = "materias/estado";
 
-    protected String aprobo;
+    protected String estado;
     protected Float notaFinal;
 
     public FlujoBasicoFixture() throws IOException {
@@ -62,7 +62,7 @@ public class FlujoBasicoFixture extends JsonFixture {
       if (response.getStatusLine().getStatusCode() >= 300) return false;
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
-      this.aprobo = String.valueOf(result.get("aprobada").toString());
+      this.estado = String.valueOf(result.get("aprobada").toString());
       this.notaFinal = null;
       if (result.get("nota_final") != null) {
         this.notaFinal = Float.parseFloat(result.get("nota_final").toString());
@@ -70,8 +70,8 @@ public class FlujoBasicoFixture extends JsonFixture {
       return true;
     }
 
-    public String aprobo() {
-      return this.aprobo;
+    public String estado() {
+      return this.estado;
     }
 
     public Float notaFinal() {
