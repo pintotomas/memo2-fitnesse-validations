@@ -102,7 +102,7 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 !3 oa1: Una materia
 !|script         |OfertaAcademicaFixture                                                                       |
 |alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
-|consultar oferta|
+|consultar oferta| juanperez |
 |check           | cantidad de materias en la oferta academica | 1 |
 |check           | oferta academica incluye codigo | 1001 | true |
 
@@ -110,8 +110,24 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 !|script         |OfertaAcademicaFixture                                                                       |
 |alta materia    | Algo3 |codigo  |7507     |Docente|Carlos Fontela|cupo|50|modalidad|parciales|
 |alta materia    | TDD   |codigo  |7510     |Docente|Emilio Gutter |cupo|60|modalidad|coloquio |
-|consultar oferta|
+|consultar oferta| juanperez |
 |check           | cantidad de materias en la oferta academica | 2 |
 |check           | oferta academica incluye codigo | 1001 | false |
 |check           | oferta academica incluye codigo | 7507 | true  |
 |check           | oferta academica incluye codigo | 7510 | true  |
+
+!3 oa3: Materias aprobadas no aparecen en la oferta
+
+!|script         |OfertaAcademicaFixture                                                                       |
+|alta materia    | Algo3 |codigo  |7507     |Docente|Carlos Fontela|cupo|50|modalidad|parciales|
+|alta materia    | TDD   |codigo  |7510     |Docente|Emilio Gutter |cupo|60|modalidad|coloquio |
+|alta materia    | Memo2 |codigo  |7511     |Docente|Nico Paez     |cupo|60|modalidad|coloquio |
+|inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|7511|
+|calificar alumno|juanperez          |materia |7511   |notas  |10|
+|consultar oferta| juanperez |
+|check           | cantidad de materias en la oferta academica | 2 |
+|check           | oferta academica incluye codigo | 7511 | false |
+|check           | oferta academica incluye codigo | 7507 | true  |
+|check           | oferta academica incluye codigo | 7510 | true  |
+
+
