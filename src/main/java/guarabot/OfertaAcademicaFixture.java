@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class OfertaAcademicaFixture extends FlujoBasicoFixture {
 
 	private List<Materia> ofertaAcademica;
-	private final static String CONSULTA_MATERIAS_PATH = "/materias";
+	private final static String CONSULTA_MATERIAS_PATH = "materias";
 
 	public OfertaAcademicaFixture() throws IOException {
 		// TODO, pasar al constructor de JsonFixture
@@ -24,8 +24,9 @@ public class OfertaAcademicaFixture extends FlujoBasicoFixture {
 	}
 
 	// TODO, eliminar codigo repetido
-	public boolean consultarOferta() throws IOException {
-		HttpGet request = new HttpGet(this.targetUrl + CONSULTA_MATERIAS_PATH);
+	public boolean consultarOferta(String usernameAlumno) throws IOException {
+        String query = "?usernameAlumno=" + usernameAlumno;
+		HttpGet request = new HttpGet(this.targetUrl + CONSULTA_MATERIAS_PATH + query);
 		request.addHeader(this.getTokenHeader());
 		HttpResponse response = client.execute(request);
 		if (response == null)
