@@ -20,8 +20,8 @@ public class FlujoBasicoFixture extends JsonFixture {
     protected final static String CALIFICAR_ALUMNO_PATH = "calificar";
     protected final static String ESTADO_MATERIA_PATH = "materias/estado";
 
-    protected boolean aprobo;
-    protected float notaFinal;
+    protected String estado;
+    protected Float notaFinal;
 
     public FlujoBasicoFixture() throws IOException {
         this.client = createHttpClient();
@@ -53,8 +53,8 @@ public class FlujoBasicoFixture extends JsonFixture {
       return this.submitPost(CALIFICAR_ALUMNO_PATH, this.prepararCalificarAlumno());
     }
 
-    public boolean obtenerEstadoMateria() throws IOException {
-      String query = "?usernameAlumno=" + this.usernameAlumno + "&codigoMateria=" + this.codigoMateria;
+    public boolean obtenerEstadoAlumnoMateria(String usernameAlumno, String codigoMateria) throws IOException {
+      String query = "?usernameAlumno=" + usernameAlumno + "&codigoMateria=" + codigoMateria;
       HttpGet request = new HttpGet(this.targetUrl + ESTADO_MATERIA_PATH + query);
       request.addHeader(this.getTokenHeader());
       HttpResponse response = client.execute(request);
@@ -62,16 +62,19 @@ public class FlujoBasicoFixture extends JsonFixture {
       if (response.getStatusLine().getStatusCode() >= 300) return false;
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
-      this.aprobo = Boolean.valueOf(result.get("aprobada").toString());
-      this.notaFinal = Float.parseFloat(result.get("nota_final").toString());
+      this.estado = String.valueOf(result.get("estado").toString());
+      this.notaFinal = null;
+      if (result.get("nota_final") != null) {
+        this.notaFinal = Float.parseFloat(result.get("nota_final").toString());
+      }
       return true;
     }
 
-    public boolean aprobo() {
-      return this.aprobo;
+    public String estado() {
+      return this.estado;
     }
 
-    public float notaFinal() {
+    public Float notaFinal() {
         return this.notaFinal;
     }
 
@@ -82,7 +85,7 @@ public class FlujoBasicoFixture extends JsonFixture {
     public String error() throws IOException {
         if (this.response == null)
             return "ERROR_DESCONOCIDO";
-        if (this.response.getStatusLine().getStatusCode() == 400) {
+        if (this.status() == 400 || this.status() == 401) {
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
             return result.get("error").toString();
@@ -96,5 +99,9 @@ public class FlujoBasicoFixture extends JsonFixture {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> result = mapper.readValue(response.getEntity().getContent(), Map.class);
         return result.get("resultado").toString();
+    }
+
+    public void apiToken(String token) {
+        this.apiToken = token;
     }
 }

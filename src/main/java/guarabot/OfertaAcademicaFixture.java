@@ -10,11 +10,12 @@ import org.apache.http.client.methods.HttpGet;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.stream.Collectors;
 
 public class OfertaAcademicaFixture extends FlujoBasicoFixture {
 
 	private List<Materia> ofertaAcademica;
-	private final static String CONSULTA_MATERIAS_PATH = "/materias";
+	private final static String CONSULTA_MATERIAS_PATH = "materias";
 
 	public OfertaAcademicaFixture() throws IOException {
 		// TODO, pasar al constructor de JsonFixture
@@ -24,8 +25,9 @@ public class OfertaAcademicaFixture extends FlujoBasicoFixture {
 	}
 
 	// TODO, eliminar codigo repetido
-	public boolean consultarOferta() throws IOException {
-		HttpGet request = new HttpGet(this.targetUrl + CONSULTA_MATERIAS_PATH);
+	public boolean consultarOferta(String usernameAlumno) throws IOException {
+        String query = "?usernameAlumno=" + usernameAlumno;
+		HttpGet request = new HttpGet(this.targetUrl + CONSULTA_MATERIAS_PATH + query);
 		request.addHeader(this.getTokenHeader());
 		HttpResponse response = client.execute(request);
 		if (response == null)
@@ -63,4 +65,9 @@ public class OfertaAcademicaFixture extends FlujoBasicoFixture {
 	}
 
 
+	public String cuposDisponibles(String codigo) {
+		return this.ofertaAcademica.stream()
+		.filter(materia -> materia.getCodigo().equals(codigo)).collect(Collectors.toList()).get(0).getCupo();
+	}
+	
 }

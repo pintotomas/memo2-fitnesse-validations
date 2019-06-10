@@ -102,37 +102,69 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 !3 oa1: Una materia
 !|script         |OfertaAcademicaFixture                                                                       |
 |alta materia    | Memo2|codigo  |1001     |Docente|Linus Torvalds|cupo|2|modalidad|parciales|
-|consultar oferta|
+|consultar oferta| juanperez |
 |check           | cantidad de materias en la oferta academica | 1 |
 |check           | oferta academica incluye codigo | 1001 | true |
+|check           | cupos disponibles | 1001 | 2  |
 
 !3 oa2: Dos materias
 !|script         |OfertaAcademicaFixture                                                                       |
 |alta materia    | Algo3 |codigo  |7507     |Docente|Carlos Fontela|cupo|50|modalidad|parciales|
 |alta materia    | TDD   |codigo  |7510     |Docente|Emilio Gutter |cupo|60|modalidad|coloquio |
-|consultar oferta|
+|consultar oferta| juanperez |
 |check           | cantidad de materias en la oferta academica | 2 |
 |check           | oferta academica incluye codigo | 1001 | false |
 |check           | oferta academica incluye codigo | 7507 | true  |
+|check           | cupos disponibles | 7507 | 50  |
 |check           | oferta academica incluye codigo | 7510 | true  |
 
-!3 oa3: Oferta academica incluye nombre
+
+!3 oa3: No hay materias
 !|script         |OfertaAcademicaFixture                                                                       |
+|consultar oferta| juanperez |
+|check           | cantidad de materias en la oferta academica | 0 |
+
+!3 oa4: Cupos disponibles disminuye al inscribirse
+!|script         |OfertaAcademicaFixture                                                                       |
+|alta materia    | Algo3 |codigo  |7507     |Docente|Carlos Fontela|cupo|50|modalidad|parciales|
+|inscribir alumno| Juan Perez     |usernameAlumno| juanperez    |materia|7507|
+|consultar oferta| juanperez |
+|check           | cantidad de materias en la oferta academica | 1 |
+|check           | oferta academica incluye codigo | 7507 | true |
+|check           | cupos disponibles | 7507 | 49  |
+
+!3 oa5: Materias aprobadas no aparecen en la oferta
+
+!|script         |OfertaAcademicaFixture                                                                       |
+|alta materia    | Algo3 |codigo  |7507     |Docente|Carlos Fontela|cupo|50|modalidad|parciales|
+|alta materia    | TDD   |codigo  |7510     |Docente|Emilio Gutter |cupo|60|modalidad|coloquio |
+|alta materia    | Memo2 |codigo  |7511     |Docente|Nico Paez     |cupo|60|modalidad|coloquio |
+|inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|7511|
+|calificar alumno|juanperez          |materia |7511   |notas  |10|
+|consultar oferta| juanperez |
+|check           | cantidad de materias en la oferta academica | 2 |
+|check           | oferta academica incluye codigo | 7511 | false |
+|check           | oferta academica incluye codigo | 7507 | true  |
+|check           | oferta academica incluye codigo | 7510 | true  |
+
+!3 oa6: Oferta academica incluye nombre
+!|script         |OfertaAcademicaFixture |
 |alta materia    | Aninfo|codigo  |7505     |Docente|Sergio Villagra|cupo|10|modalidad|parciales|
-|consultar oferta|
+|consultar oferta| juanperez |
 |check           | cantidad de materias en la oferta academica | 1 |
 |check           | oferta academica incluye nombre | Aninfo | true |
 
-!3 oa4: Oferta academica incluye modalidad
-!|script         |OfertaAcademicaFixture                                                                       |
+!3 oa7: Oferta academica incluye modalidad
+!|script         |OfertaAcademicaFixture |
 |alta materia    | Aninfo|codigo  |7505     |Docente|Sergio Villagra|cupo|10|modalidad|parciales|
-|consultar oferta|
+|consultar oferta| juanperez |
 |check           | cantidad de materias en la oferta academica | 1 |
 |check           | oferta academica incluye modalidad | parciales | true |
 
-!3 oa5: Oferta academica incluye cupo
-!|script         |OfertaAcademicaFixture                                                                       |
+!3 oa8: Oferta academica incluye cupo
+!|script         |OfertaAcademicaFixture |
 |alta materia    | Aninfo|codigo  |7505     |Docente|Sergio Villagra|cupo|10|modalidad|parciales|
-|consultar oferta|
+|consultar oferta| juanperez |
 |check           | cantidad de materias en la oferta academica | 1 |
 |check           | oferta academica incluye cupo | 10 | true |
+|check           | cupos disponibles | 7510 | 60  |

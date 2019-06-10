@@ -36,8 +36,8 @@ FB1: Materia con modalidad de parciales aprobada
 |alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|parciales|
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |[8,6]                                     |
-|obtener estado materia|
-|check           |aprobo             |true                                                                 |
+|obtener estado alumno|juanperez    |materia |1001|
+|check           |estado             |APROBADO                                                             |
 |check           |nota final         |~=7.0                                                                |
 
 FB2: Materia con modalidad de parciales desaprobada
@@ -46,8 +46,8 @@ FB2: Materia con modalidad de parciales desaprobada
 |alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|parciales|
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |[4,2]                                     |
-|obtener estado materia|
-|check           |aprobo             |false                                                                |
+|obtener estado alumno|juanperez    |materia |1001|
+|check           |estado             |DESAPROBADO                                                          |
 |check           |nota final         |~=3.0                                                                |
 
 FB3: Materia con modalidad de tareas desaprobada
@@ -56,8 +56,8 @@ FB3: Materia con modalidad de tareas desaprobada
 |alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|tareas   |
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |[4,6,8,1]                                 |
-|obtener estado materia|
-|check           |aprobo             |false                                                                |
+|obtener estado alumno|juanperez    |materia |1001|
+|check           |estado             |DESAPROBADO                                                          |
 |check           |nota final         |~=4.75                                                               |
 
 FB3.1: Materia con modalidad de tareas aprobada
@@ -66,8 +66,8 @@ FB3.1: Materia con modalidad de tareas aprobada
 |alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|tareas   |
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |[6,6,8,8]                                 |
-|obtener estado materia|
-|check           |aprobo             |true                                                                 |
+|obtener estado alumno|juanperez    |materia |1001|
+|check           |estado             |APROBADO                                                             |
 |check           |nota final         |~=7.00                                                               |
 
 FB4: Materia con modalidad de tareas desaprobada
@@ -76,8 +76,8 @@ FB4: Materia con modalidad de tareas desaprobada
 |alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|tareas   |
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |[4,3,6,8,1,1]                             |
-|obtener estado materia|
-|check           |aprobo             |false                                                                |
+|obtener estado alumno|juanperez    |materia |1001|
+|check           |estado             |DESAPROBADO                                                          |
 |check           |nota final         |~=1.00                                                               |
 
 FB5: Materia con modalidad de coloquio aprobada
@@ -86,8 +86,8 @@ FB5: Materia con modalidad de coloquio aprobada
 |alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|coloquio |
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |10                                        |
-|obtener estado materia|
-|check           |aprobo             |true                                                                 |
+|obtener estado alumno|juanperez    |materia |1001|
+|check           |estado             |APROBADO                                                             |
 |check           |nota final         |~=10.0                                                               |
 
 FB6: Materia con modalidad de coloquio desaprobada
@@ -96,9 +96,35 @@ FB6: Materia con modalidad de coloquio desaprobada
 |alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|coloquio |
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
 |calificar alumno|juanperez          |materia |1001     |notas  |1                                         |
-|obtener estado materia|
-|check           |aprobo             |false                                                                |
+|obtener estado alumno|juanperez    |materia |1001|
+|check           |estado             |DESAPROBADO                                                          |
 |check           |nota final         |~=1.0                                                                |
+
+FB7: Materia en curso
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|coloquio |
+|inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
+|obtener estado alumno|juanperez    |materia |1001|
+|check           |estado             |EN_CURSO                                                             |
+|check           |nota final         |null                                                                 |
+
+FB8: Alumno no inscripto
+
+!|script         |FlujoBasicoFixture                                                                       |
+|alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|coloquio |
+|obtener estado alumno|juanperez    |materia |1001|
+|check           |estado             |NO_INSCRIPTO                                                         |
+|check           |nota final         |null                                                                 |
+
+
+AT1: Api Token inválido
+
+!|script         |FlujoBasicoFixture                                                                       |
+|api token       |zaraza_token_123                                                                         |
+|alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|coloquio |
+|check           | status         | 401 |
+|check           | error          | API_TOKEN_INVALIDO |
 
 
 !contents -R2
