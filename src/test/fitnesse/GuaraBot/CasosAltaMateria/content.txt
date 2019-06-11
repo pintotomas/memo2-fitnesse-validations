@@ -1,4 +1,3 @@
-
 |import |
 |guarabot|
 
@@ -117,7 +116,7 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |check           | oferta academica incluye codigo | 7507 | true  |
 |check           | cupos disponibles | 7507 | 50  |
 |check           | oferta academica incluye codigo | 7510 | true  |
-|check           | cupos disponibles | 7510 | 60  |
+
 
 !3 oa3: No hay materias
 !|script         |OfertaAcademicaFixture                                                                       |
@@ -147,3 +146,23 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |check           | oferta academica incluye codigo | 7507 | true  |
 |check           | oferta academica incluye codigo | 7510 | true  |
 
+!3 oa6: Oferta academica incluye nombre
+!|script         |OfertaAcademicaFixture |
+|alta materia    | Aninfo|codigo  |7505     |Docente|Sergio Villagra|cupo|10|modalidad|parciales|
+|consultar oferta| juanperez |
+|check           | cantidad de materias en la oferta academica | 1 |
+|check           | oferta academica incluye nombre | Aninfo | true |
+
+!3 oa7: Oferta academica incluye modalidad
+!|script         |OfertaAcademicaFixture |
+|alta materia    | Aninfo|codigo  |7505     |Docente|Sergio Villagra|cupo|10|modalidad|parciales|
+|consultar oferta| juanperez |
+|check           | cantidad de materias en la oferta academica | 1 |
+|check           | oferta academica incluye modalidad | parciales | true |
+
+!3 oa8: Oferta academica incluye cupo
+!|script         |OfertaAcademicaFixture |
+|alta materia    | Aninfo|codigo  |7505     |Docente|Sergio Villagra|cupo|10|modalidad|parciales|
+|consultar oferta| juanperez |
+|check           | cantidad de materias en la oferta academica | 1 |
+|check           | oferta academica incluye cupo | 10 | true |
