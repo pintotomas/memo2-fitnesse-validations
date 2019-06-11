@@ -20,7 +20,7 @@ Entonces recibe:
     7541:Algo2
     7507:Algo3
 
-Escenario e2e2: Consultar notas: materia aprobada
+Escenario e2e3: Consultar notas: materia aprobada
 Dada la materia "Algo1" con codigo "7540", 20 cupos y de modalidad "final"
 Y que "juanperez" está inscripto en la materia "7540"
 Y que "juanperez" aprobó la materia "7540" con "[10]"
@@ -29,7 +29,7 @@ Entonces recibe:
     Estado: Aprobada
     Nota: 10
 
-Escenario e2e2: Consultar notas: materia desaprobada
+Escenario e2e4: Consultar notas: materia desaprobada
 Dada la materia "Algo1" con codigo "7540", 20 cupos y de modalidad "final"
 Y que "juanperez" está inscripto en la materia "7540"
 Y que "juanperez" aprobó la materia "7540" con "[3]"
@@ -38,14 +38,14 @@ Entonces recibe:
     Estado: Desaprobada
     Nota: 3
 
-Escenario e2e2: Consultar notas: materia en curso
+Escenario e2e5: Consultar notas: materia en curso
 Dada la materia "Algo1" con codigo "7540", 20 cupos y de modalidad "final"
 Y que "juanperez" está inscripto en la materia "7540"
 Cuando @juanperez envia "/estado 7540"
 Entonces recibe:
     Estado: En curso
 
-Escenario e2e2: Consultar notas: no inscripto
+Escenario e2e6: Consultar notas: no inscripto
 Dada la materia "Algo1" con codigo "7540", 20 cupos y de modalidad "final"
 Cuando @juanperez envia "/estado 7540"
 Entonces recibe:
