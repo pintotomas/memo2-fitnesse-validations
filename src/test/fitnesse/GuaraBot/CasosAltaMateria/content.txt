@@ -139,7 +139,7 @@ error => status=400 {"resultado:"error:...."}  (los puntos representan el mensaj
 |alta materia    | TDD   |codigo  |7510     |Docente|Emilio Gutter |cupo|60|modalidad|coloquio |
 |alta materia    | Memo2 |codigo  |7511     |Docente|Nico Paez     |cupo|60|modalidad|coloquio |
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|7511|
-|calificar alumno|juanperez          |materia |7511   |notas  |10|
+|calificar alumno|juanperez          |materia |7511   |notas  |[10]|
 |consultar oferta| juanperez |
 |check           | cantidad de materias en la oferta academica | 2 |
 |check           | oferta academica incluye codigo | 7511 | false |

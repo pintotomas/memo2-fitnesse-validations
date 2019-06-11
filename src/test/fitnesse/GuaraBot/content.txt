@@ -85,7 +85,7 @@ FB5: Materia con modalidad de coloquio aprobada
 !|script         |FlujoBasicoFixture                                                                       |
 |alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|coloquio |
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
-|calificar alumno|juanperez          |materia |1001     |notas  |10                                        |
+|calificar alumno|juanperez          |materia |1001     |notas  |[10]                                        |
 |obtener estado alumno|juanperez    |materia |1001|
 |check           |estado             |APROBADO                                                             |
 |check           |nota final         |~=10.0                                                               |
@@ -95,7 +95,7 @@ FB6: Materia con modalidad de coloquio desaprobada
 !|script         |FlujoBasicoFixture                                                                       |
 |alta materia    |Sistemas Operativos|codigo  |1001     |Docente|Linus Torvalds|cupo|30|modalidad|coloquio |
 |inscribir alumno|Juan Perez   |usernameAlumno|juanperez|materia|1001                                      |
-|calificar alumno|juanperez          |materia |1001     |notas  |1                                         |
+|calificar alumno|juanperez          |materia |1001     |notas  |[1]                                         |
 |obtener estado alumno|juanperez    |materia |1001|
 |check           |estado             |DESAPROBADO                                                          |
 |check           |nota final         |~=1.0                                                                |
